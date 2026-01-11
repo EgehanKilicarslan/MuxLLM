@@ -24,7 +24,7 @@ fi
 ALLOWED_TYPES="feat|fix|chore|refactor|docs|style|perf|test"
 
 # Allowed Scopes - THIS IS STRICTLY ENFORCED
-ALLOWED_SCOPES="go|py|proto|ops|docs"
+ALLOWED_SCOPES="gateway|router|vector|proto|ops|docs"
 
 # Regex: ^(type)\((scope)\): (.+)
 # Only allows listed ones.
@@ -43,18 +43,19 @@ if ! [[ "$COMMIT_MSG" =~ $REGEX ]]; then
     echo ""
     echo -e "--------------------------------------------------------"
     echo -e "Correct Format : ${GREEN}<type>(<scope>): <short description>${NC}"
-    echo -e "Example        : ${GREEN}feat(go): add new worker pool logic${NC}"
+    echo -e "Example        : ${GREEN}feat(gateway): add new worker pool logic${NC}"
     echo -e "--------------------------------------------------------"
     echo ""
     echo -e "${BLUE}1. Allowed Types:${NC}"
     echo -e "   • feat, fix, chore, refactor, docs, style, perf, test"
     echo ""
     echo -e "${BLUE}2. Allowed Scopes:${NC}"
-    echo -e "   • ${GREEN}go${NC}    (Backend Go Service)"
-    echo -e "   • ${GREEN}py${NC}    (Backend Python Service)"
-    echo -e "   • ${GREEN}proto${NC} (gRPC Protobuf Files)"
-    echo -e "   • ${GREEN}ops${NC}   (Docker, Makefile, Config)"
-    echo -e "   • ${GREEN}docs${NC}  (README, Documentation)"
+    echo -e "   • ${GREEN}gateway${NC} (Backend Go Service)"
+    echo -e "   • ${GREEN}router${NC}  (Backend Python Router Service)"
+    echo -e "   • ${GREEN}vector${NC}  (Backend Python Vector Service)"
+    echo -e "   • ${GREEN}proto${NC}   (gRPC Protobuf Files)"
+    echo -e "   • ${GREEN}ops${NC}     (Docker, Makefile, Config)"
+    echo -e "   • ${GREEN}docs${NC}    (README, Documentation)"
     echo ""
     exit 1
 fi

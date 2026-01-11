@@ -23,18 +23,10 @@ WORKDIR /app
 
 RUN addgroup --system appgroup && adduser --system --group appuser
 
-RUN mkdir -p /home/appuser/.cache/huggingface && \
-    mkdir -p /home/appuser/.cache/models && \
-    chown -R appuser:appgroup /home/appuser/.cache
-
-RUN mkdir -p /tmp/muxllm/uploads && \
-    chown -R appuser:appgroup /tmp/muxllm/uploads
-
 COPY --from=builder /dist /app/libs
 
 ENV PYTHONPATH="/app/libs:/app:$PYTHONPATH"
 ENV PATH="/app/libs/bin:$PATH"
-ENV HF_HOME="/home/appuser/.cache/huggingface"
 
 # COPY docker-entrypoint.sh /app/docker-entrypoint.sh
 # RUN chmod +x /app/docker-entrypoint.sh

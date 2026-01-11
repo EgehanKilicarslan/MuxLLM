@@ -17,8 +17,8 @@ Every commit message **must** follow this format:
 ### ✅ Valid Examples
 
 ```text
-feat(go): add new worker pool implementation
-fix(py): resolve issue with data serialization
+feat(gateway): add new worker pool implementation
+fix(router): resolve issue with data serialization
 chore(ops): update docker-compose networks
 docs(docs): improve API documentation
 ```
@@ -27,7 +27,7 @@ docs(docs): improve API documentation
 
 ```text
 feat: add login                    ❌ Missing scope
-update(go): change function        ❌ 'update' is not a valid type
+update(gateway): change function        ❌ 'update' is not a valid type
 fix(backend): fix bug              ❌ 'backend' is not a valid scope (use 'go' or 'py')
 Added new feature                  ❌ Doesn't follow format at all
 ```
@@ -38,16 +38,16 @@ Added new feature                  ❌ Doesn't follow format at all
 
 The **type** indicates what kind of change you're making:
 
-| Type           | When to Use                                                      | Example                                        |
-| -------------- | ---------------------------------------------------------------- | ---------------------------------------------- |
-| **`feat`**     | Adding a new feature or capability                               | `feat(go): add new worker pool implementation` |
-| **`fix`**      | Fixing a bug or error                                            | `fix(go): prevent memory leak in handler`      |
-| **`chore`**    | Maintenance tasks (dependencies, configs) that don't affect code | `chore(ops): update nginx to v1.24`            |
-| **`refactor`** | Code improvements without changing behavior                      | `refactor(py): simplify embedding logic`       |
-| **`docs`**     | Documentation changes only                                       | `docs(docs): update installation steps`        |
-| **`style`**    | Code formatting, whitespace (no logic changes)                   | `style(py): fix indentation in script.py`      |
-| **`perf`**     | Performance improvements                                         | `perf(go): optimize database queries`          |
-| **`test`**     | Adding or fixing tests                                           | `test(py): add unit tests for embeddings`      |
+| Type           | When to Use                                                      | Example                                             |
+| -------------- | ---------------------------------------------------------------- | --------------------------------------------------- |
+| **`feat`**     | Adding a new feature or capability                               | `feat(gateway): add new worker pool implementation` |
+| **`fix`**      | Fixing a bug or error                                            | `fix(router): prevent memory leak in handler`       |
+| **`chore`**    | Maintenance tasks (dependencies, configs) that don't affect code | `chore(ops): update nginx to v1.24`                 |
+| **`refactor`** | Code improvements without changing behavior                      | `refactor(router): simplify embedding logic`        |
+| **`docs`**     | Documentation changes only                                       | `docs(docs): update installation steps`             |
+| **`style`**    | Code formatting, whitespace (no logic changes)                   | `style(router): fix indentation in script.py`       |
+| **`perf`**     | Performance improvements                                         | `perf(gateway): optimize database queries`          |
+| **`test`**     | Adding or fixing tests                                           | `test(router): add unit tests for embeddings`       |
 
 ---
 
@@ -55,13 +55,14 @@ The **type** indicates what kind of change you're making:
 
 The **scope** indicates which part of the project is affected:
 
-| Scope       | Description                       | Directory/Files                         |
-| ----------- | --------------------------------- | --------------------------------------- |
-| **`go`**    | Backend Go service (Orchestrator) | `/backend-go/*`                         |
-| **`py`**    | Backend Python service (AI Brain) | `/backend-python/*`                     |
-| **`proto`** | gRPC Protobuf definitions         | `/proto/*`                              |
-| **`ops`**   | DevOps, Docker, CI/CD             | `Dockerfile`, `docker-compose.yml`, etc |
-| **`docs`**  | Documentation files               | `README.md`, `CONTRIBUTING.md`, etc     |
+| Scope         | Description                       | Directory/Files                         |
+| ------------- | --------------------------------- | --------------------------------------- |
+| **`gateway`** | Backend Go service (Orchestrator) | `/backend-gateway/*`                    |
+| **`router`**  | Backend Python service (AI Brain) | `/backend-router/*`                     |
+| **`vector`**  | Backend Python Vector service     | `/backend-vector/*`                     |
+| **`proto`**   | gRPC Protobuf definitions         | `/proto/*`                              |
+| **`ops`**     | DevOps, Docker, CI/CD             | `Dockerfile`, `docker-compose.yml`, etc |
+| **`docs`**    | Documentation files               | `README.md`, `CONTRIBUTING.md`, etc     |
 
 ---
 
@@ -140,7 +141,7 @@ The `.githooks/commit-msg` script automatically:
    Allowed types: feat, fix, chore, refactor, docs, style, perf, test
 
 ❌ Invalid scope 'backend'
-   Allowed scopes: go, py, proto, ops, docs
+   Allowed scopes: gateway, router, vector, proto, ops, docs
 ```
 
 ---
@@ -153,8 +154,8 @@ The `.githooks/commit-msg` script automatically:
 ✅ feat(docs): improve API documentation with examples
 ❌ feat(docs): update docs
 
-✅ fix(go): prevent nil pointer dereference in auth middleware
-❌ fix(go): fixed bug
+✅ fix(gateway): prevent nil pointer dereference in auth middleware
+❌ fix(gateway): fixed bug
 ```
 
 ### Keep Commits Atomic

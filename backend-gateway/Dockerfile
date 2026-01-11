@@ -20,9 +20,6 @@ WORKDIR /app
 
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 
-RUN mkdir -p /tmp/muxllm/uploads && \
-    chown -R appuser:appgroup /tmp/muxllm/uploads
-
 COPY --from=builder /app/orchestrator .
 
 RUN chown appuser:appgroup ./orchestrator

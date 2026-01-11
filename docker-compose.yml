@@ -1,49 +1,60 @@
 services:
-  # 🧠 AI BRAIN (gRPC Server)
-  backend-python:
+  # 🧠 ROUTER (Logic & Decision - Python)
+  backend-router:
     build:
-      context: ./backend-python
+      context: ./backend-router
       dockerfile: Dockerfile
-    container_name: muxllm-python-service
+    container_name: muxllm-router
     ports:
-      - "50051:50051" # gRPC Server
+      - "50051:50051" # gRPC Server Port
     env_file:
       - .env
-    volumes:
-      - models:/home/appuser/.cache/models
-      - uploads:/tmp/muxllm/uploads
-    networks:
-      - muxllm-network
-    restart: unless-stopped
-
-  # 🌐 ORCHESTRATOR (HTTP + gRPC Server)
-  backend-go:
-    build:
-      context: ./backend-go
-      dockerfile: Dockerfile
-    container_name: muxllm-go-gateway
-    ports:
-      - "8080:8080" # HTTP API
-      - "50052:50052" # gRPC Server (Python -> Go)
-    environment:
-      - GIN_MODE=release
-    env_file:
-      - .env
-    volumes:
-      - uploads:/tmp/muxllm/uploads
     depends_on:
-      backend-python:
+      backend-vector:
         condition: service_started
     networks:
       - muxllm-network
     restart: unless-stopped
 
-volumes:
-  models:
-    driver: local
-  uploads:
-    driver: local
+  # 💪 VECTOR ENGINE (Embeddings - Python)
+  backend-vector:
+    build:
+      context: ./backend-vector
+      dockerfile: Dockerfile
+    container_name: muxllm-vector
+    ports:
+      - "50052:50052" # gRPC Server Port
+    networks:
+      - muxllm-network
+    restart: unless-stopped
+    volumes:
+      - models:/home/appuser/.cache/models
+
+  # 🌐 GATEWAY (Orchestrator - Go)
+  backend-gateway:
+    build:
+      context: ./backend-gateway
+      dockerfile: Dockerfile
+    container_name: muxllm-gateway
+    ports:
+      - "8080:8080" # HTTP Server Port
+    environment:
+      - GIN_MODE=release
+    env_file:
+      - .env
+    depends_on:
+      backend-router:
+        condition: service_started
+      backend-vector:
+        condition: service_started
+    networks:
+      - muxllm-network
+    restart: unless-stopped
 
 networks:
   muxllm-network:
     driver: bridge
+
+volumes:
+  models:
+    driver: local
