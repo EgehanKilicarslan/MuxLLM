@@ -1,3 +1,2 @@
-module github.com/EgehanKilicarslan/muxllm/backend-go
-
+module github.com/EgehanKilicarslan/muxllm/backend-gateway
 go 1.25.5
