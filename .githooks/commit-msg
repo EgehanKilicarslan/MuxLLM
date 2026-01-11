@@ -1,0 +1,63 @@
+#!/bin/bash
+
+# Color Codes
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+BLUE='\033[0;34m'
+CYAN='\033[0;36m'
+NC='\033[0m' # No Color
+
+MSG_FILE=$1
+COMMIT_MSG=$(head -n1 "$MSG_FILE")
+
+# Skip merge commits
+if [[ "$COMMIT_MSG" =~ ^Merge ]]; then
+    exit 0
+fi
+
+# ---------------------------------------------------------
+# RULE SETS (WHITELISTS)
+# ---------------------------------------------------------
+
+# Allowed Types
+ALLOWED_TYPES="feat|fix|chore|refactor|docs|style|perf|test"
+
+# Allowed Scopes - THIS IS STRICTLY ENFORCED
+ALLOWED_SCOPES="go|py|proto|ops|docs"
+
+# Regex: ^(type)\((scope)\): (.+)
+# Only allows listed ones.
+REGEX="^(${ALLOWED_TYPES})\((${ALLOWED_SCOPES})(,(${ALLOWED_SCOPES}))*\): .+$"
+
+# ---------------------------------------------------------
+# CONTROL MECHANISM
+# ---------------------------------------------------------
+
+if ! [[ "$COMMIT_MSG" =~ $REGEX ]]; then
+    echo ""
+    echo -e "${RED}⛔ COMMIT REJECTED: Message format does not comply with standards!${NC}"
+    echo -e "${YELLOW}According to project standards, specifying Type and Scope is mandatory.${NC}"
+    echo ""
+    echo -e "Your Message: ${CYAN}$COMMIT_MSG${NC}"
+    echo ""
+    echo -e "--------------------------------------------------------"
+    echo -e "Correct Format : ${GREEN}<type>(<scope>): <short description>${NC}"
+    echo -e "Example        : ${GREEN}feat(go): add new worker pool logic${NC}"
+    echo -e "--------------------------------------------------------"
+    echo ""
+    echo -e "${BLUE}1. Allowed Types:${NC}"
+    echo -e "   • feat, fix, chore, refactor, docs, style, perf, test"
+    echo ""
+    echo -e "${BLUE}2. Allowed Scopes:${NC}"
+    echo -e "   • ${GREEN}go${NC}    (Backend Go Service)"
+    echo -e "   • ${GREEN}py${NC}    (Backend Python Service)"
+    echo -e "   • ${GREEN}proto${NC} (gRPC Protobuf Files)"
+    echo -e "   • ${GREEN}ops${NC}   (Docker, Makefile, Config)"
+    echo -e "   • ${GREEN}docs${NC}  (README, Documentation)"
+    echo ""
+    exit 1
+fi
+
+# Successful
+exit 0
