@@ -3,8 +3,9 @@
 .vscode
 __pycache__
 venv/
-backend-python/venv/
-backend-go/bin/
+backend-router/venv/
+backend-vector/venv/
+backend-gateway/bin/
 *.md
 docker-compose.yml
 Makefile
